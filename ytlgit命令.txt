@@ -1,0 +1,110 @@
+安装git
+Linux上安装：
+	命令：yum install git
+	验证安装是否成功命令:git --version
+Windows上安装：
+	Git官网直接下载安装程序，然后默认安装即可
+	安装完之后桌面右击会出现两个图标分别是：Git GUIhere 和 Git Bash Here
+	一般习惯性用git bash here
+	最后一步设置标识，输入如下命令：
+		git config --global user.name "你的名字"
+		git config --global user.email "你的邮箱"
+		
+	git流程：
+		Remote---pull------------------------------------------------->workspace
+		Remote---fetch/clone--->Repository---checkout----------------->workspace
+		Remote<--push-----------Repository<---commit---index<---add---workspace
+		* workspace:工作区
+		* index/stage:暂存区
+		* repository：本地仓库
+		* remote；远程仓库
+		
+	一次完整的git使用过程：查看文件内容(cat filename)
+		1、创建或者获取版本库
+			创建本地库，选择一个文件目录，然后右击git bash命令行窗口，执行如下命令初始化一个本地仓库
+			git init/git init "创建一个新的文件夹做仓库"
+		2、获取远程仓库至本地仓库
+			git clone git://github.com/YtlGitHub/YtlGit
+		3、检查当前文件状态
+			git status
+		4、把更改的内容添加到暂存区
+			git add filename (指定文件名)
+			git add * (所有文件)
+			git add *.txt (支持通配符，所有.txt文件)
+			此时，暂存区的内容和工作区的内容一致
+		5、提交到本地仓库
+			git commit -m "代码提交信息"
+			注意：每次提交前，先用git status看下，是不是都已暂存起来了，然后在执行提交命令
+		6、跳过暂存区域的提交方法
+			git commit -a -m "代码提交信息"
+			git commit 加上-a 选项，git 就会把自动把所有已经跟踪过的文件暂存起来一并提交。从而跳过add
+		7、查看工作区和版本库里面最新版本的区别
+			git diff HEAD -- filename
+		8、移除文件：
+			git rm filename
+		9、对文件重命名
+			git mv README.*** README
+			(这个命令相当于 mv README.*** README、git rm README.***、git add README 这三条命令的集合)
+		10、查看提交历史
+			git log
+			git log --pretty=oneline
+		11、版本回退
+			git reaet --hard HEAD^ 回退到上一个版本
+			git reaet --hard HEAD^^ 回退到上上版本
+			git reaet --hard HEAD~100 回退到前100个版本
+			git reaet --hare HEAD 版本号 回退到固定版本号
+			git reflog 记录每一次命令(可查看版本号)
+		12、与远程仓库建立连接
+			git remote add origin git@github.com:YtlGitHub/YtlGit.git
+		13、如果已经关联了远程仓库，可以使用下述命令查看远程仓库是哪个
+			git remote -v
+		14、然后将本地的改动提交到远程仓库
+			git push origin 分支
+		15、创建一个分支dev
+			git branch dev
+			git branch 后面不加分支的名字就是查看当前分支
+		16、切换到当前分支
+			git checkout dev
+		17、创建并切换分支
+			git checkout -b dev
+		18、切换到主分支
+			git checkout master
+		19、合并dev分支到master(可能会有冲突)
+			git merge dev
+		20、把刚才新建的分支删除
+			git branch -d dev
+		21、将分支推送到远端仓库（推送成功后其他人可见）
+			git push origin 分支名
+			git remote set-url origin https://github.com/YtlGitHub/YtlGit.git
+			git push origin main
+		22、如果push失败了，那就先pull一下，在push
+			git pull
+创建密钥：
+	ssh-keygen -t rsa -C "1766842398@qq.com"
+	cat ~/.ssh/id_rsa.pub
+	id_esa 是私钥
+	id_rsa.pub 是公钥
+	在在GitHub 头像点击设置里面添加ssh
+
+git中的SSL certificate problem: unable to get local issuer certificate错误的解决办法
+	我们在使用git初始化一个项目时，尤其是通过git submodule update --init --remote初始化子模块时，可能会遇到下面这个错误：
+
+	fatal: unable to access 'https://myserver.com/gogs/user1/myapp/': SSL certificate problem: unable to get local issuer certificate
+　　这是由于当你通过HTTPS访问Git远程仓库的时候，如果服务器上的SSL证书未经过第三方机构认证，git就会报错。原因是因为未知的没有签署过的证书意味着可能存在很大的风险。解决办法就是通过下面的命令将git中的sslverify关掉：
+
+	git config --global http.sslverify false
+　　上面这行命令的影响范围是系统当前用户，如果要设置为全局所有用户，可以改成这样：
+
+	git config --system http.sslverify false
+　　如果只是想针对当前仓库进行设置，可以在需要修改的仓库目录下执行：
+
+	git config http.sslverify false
+　　如果你的仓库中存在嵌套的git子模块（就是子模块中又引用了子模块），在进行初始化时，仍然有可能遇到self signed certificate in certificate chain的错误，此时可以通过执行下面的命令来解决：
+
+	npm config set strict-ssl false
+　　对于npm而言，除了可以在package.json的scripts属性中自定义脚本外，npm-scripts也内置了一些脚本，用来在特定的时机执行某些特定的任务，具体可以参照npm的官方文档https://docs.npmjs.com/misc/scripts
+
+
+
+		
+		
