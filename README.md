@@ -1,5 +1,5 @@
 ### 你好👋
-杨天龙的GitHub学习资料
+杨天龙的学习资料
 
 <!--
 **YtlGitHub/YtlGitHub** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
